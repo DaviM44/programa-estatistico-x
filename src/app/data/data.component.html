@@ -1,0 +1,12 @@
+<!-- data.component.html -->
+<div>
+  <h2>Calculate Standard Deviation</h2>
+  <form [formGroup]="dataForm" (ngSubmit)="calculateStdDeviation()">
+    <label for="data">Enter data (comma-separated):</label>
+    <input type="text" id="data" formControlName="data">
+    <button type="submit" [disabled]="dataForm.invalid">Calculate</button>
+  </form>
+  <div *ngIf="stdDeviation !== undefined">
+    <p>Standard Deviation: {{ stdDeviation }}</p>
+  </div>
+</div>
