@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { DataComponent } from './data/data.component';
 
 const routes: Routes = [
-  {path: 'pau', component: DataComponent }
+  { path: '', redirectTo: 'calc', pathMatch: 'full' }, // Redireciona para 'pau' quando a rota é vazia
+  {path: 'calc', component: DataComponent }
 
 
 ];
