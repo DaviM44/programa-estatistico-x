@@ -44,6 +44,7 @@ background-attachment: fixed; /* Mantém a imagem fixa ao rolar a página *">
                     <th scope="col">#</th>
                     <th scope="col">Dados</th>
                     <th scope="col">Média</th>
+                    <th scope="col">Variância</th>
                     <th scope="col">Desvio-padrão</th>
                   </tr>
                 </thead>
@@ -52,6 +53,7 @@ background-attachment: fixed; /* Mantém a imagem fixa ao rolar a página *">
                     <th scope="row">{{ i + 1 }}</th>
                     <td>{{ calculation.data.join(', ') }}</td>
                     <td>{{ calculation.mean }}</td>
+                    <td>{{ (calculation.stdDeviation * calculation.stdDeviation) | number:'1.2-2' }}</td>
                     <td>{{ calculation.stdDeviation }}</td>
                   </tr>
                 </tbody>
