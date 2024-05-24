@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../data.service';
+import { Data } from '../data';
 
 @Component({
   selector: 'app-data',
@@ -11,6 +12,8 @@ export class DataComponent implements OnInit {
 
   dataForm!: FormGroup;
   stdDeviation!: number;
+  mean!: number;
+  calculations: Data[] = [];
 
   constructor(private formBuilder: FormBuilder, private dataService: DataService) { }
 
@@ -18,6 +21,7 @@ export class DataComponent implements OnInit {
     this.dataForm = this.formBuilder.group({
       data: ['', Validators.required]
     });
+    this.getCalculations();
   }
 
   calculateStdDeviation() {
@@ -29,12 +33,24 @@ export class DataComponent implements OnInit {
     this.dataService.calculateStd(data)
       .subscribe(response => {
         this.stdDeviation = response.std_deviation;
-        this.saveCalculation(data, response.std_deviation);
+        this.mean = response.mean;
+        this.saveCalculation(data, response.mean, response.std_deviation);
       });
   }
 
-  saveCalculation(data: number[], stdDeviation: number) {
-    this.dataService.saveCalculation({ data, stdDeviation })
-      .subscribe(() => console.log('Calculation saved successfully'));
+  saveCalculation(data: number[], mean: number, stdDeviation: number) {
+    const calculation: Data = { data, mean, stdDeviation }; // Ensure correct property names
+    this.dataService.saveCalculation(calculation)
+      .subscribe(() => {
+        console.log('Calculation saved successfully');
+        this.getCalculations(); // Refresh the calculations list
+      });
+  }
+
+  getCalculations() {
+    this.dataService.getCalculations()
+      .subscribe(calculations => {
+        this.calculations = calculations.filter(calculation => calculation.data !== undefined);
+      });
   }
 }

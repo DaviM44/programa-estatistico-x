@@ -1,12 +1,53 @@
 <!-- data.component.html -->
-<div>
-  <h2>Calculate Standard Deviation</h2>
-  <form [formGroup]="dataForm" (ngSubmit)="calculateStdDeviation()">
-    <label for="data">Enter data (comma-separated):</label>
-    <input type="text" id="data" formControlName="data">
-    <button type="submit" [disabled]="dataForm.invalid">Calculate</button>
-  </form>
-  <div *ngIf="stdDeviation !== undefined">
-    <p>Standard Deviation: {{ stdDeviation }}</p>
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="text-center d-block">Desvio-padrão, O Cálculo</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="dataForm" (ngSubmit)="calculateStdDeviation()">
+        <div class="form-group">
+          <label for="data" class="text-center d-block">Coloque os valores e os separe por vírgula:</label>
+          <input type="text" id="data" formControlName="data" class="form-control mt-3" placeholder="Por exemplo: 1, 2, 3, 4...">
+          <div *ngIf="dataForm.controls['data'].invalid && (dataForm.controls['data'].dirty || dataForm.controls['data'].touched)" class="text-danger">
+            São necessários dados.
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3 col-md-12" [disabled]="dataForm.invalid">Calcular</button>
+      </form>
+      <div *ngIf="stdDeviation !== undefined && mean !== undefined" class="mt-4">
+        <div class="alert alert-info">
+          <p><strong>Média:</strong> {{ mean }}</p>
+          <p><strong>Desvio-padrão:</strong> {{ stdDeviation }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabela para mostrar os dados salvos -->
+  <div class="card mt-5">
+    <div class="card-header">
+      <h3 class="text-center d-block">Histórico de Cálculos</h3>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Dados</th>
+            <th scope="col">Média</th>
+            <th scope="col">Desvio-padrão</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let calculation of calculations; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ calculation.data.join(', ') }}</td>
+            <td>{{ calculation.mean }}</td>
+            <td>{{ calculation.stdDeviation }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
