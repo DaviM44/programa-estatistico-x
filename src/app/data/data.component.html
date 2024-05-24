@@ -1,53 +1,65 @@
-<!-- data.component.html -->
-<div class="container mt-5">
-  <div class="card">
-    <div class="card-header">
-      <h2 class="text-center d-block">Desvio-padrão, O Cálculo</h2>
-    </div>
-    <div class="card-body">
-      <form [formGroup]="dataForm" (ngSubmit)="calculateStdDeviation()">
-        <div class="form-group">
-          <label for="data" class="text-center d-block">Coloque os valores e os separe por vírgula:</label>
-          <input type="text" id="data" formControlName="data" class="form-control mt-3" placeholder="Por exemplo: 1, 2, 3, 4...">
-          <div *ngIf="dataForm.controls['data'].invalid && (dataForm.controls['data'].dirty || dataForm.controls['data'].touched)" class="text-danger">
-            São necessários dados.
+<div class="container-fluid" style="height: 100vh; background-image: url(https://r4.wallpaperflare.com/wallpaper/765/406/516/landscape-4k-bliss-windows-xp-wallpaper-9866fd2850207c2810ac117e5862c4aa.jpg); /* Caminho para sua imagem de fundo */
+background-size: cover; /* Ajusta a imagem ao tamanho da tela */
+background-repeat: no-repeat; /* Impede a repetição da imagem */
+background-position: center center; /* Centraliza a imagem */
+background-attachment: fixed; /* Mantém a imagem fixa ao rolar a página *">
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col-md-8">
+      <div class="card mt-5">
+        <div class="card-header">
+          <h2 class="text-center d-block">Desvio-padrão, O Cálculo</h2>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="dataForm" (ngSubmit)="calculateStdDeviation()">
+            <div class="form-group">
+              <label for="data" class="text-center d-block">Coloque os valores e os separe por vírgula:</label>
+              <input type="text" id="data" formControlName="data" class="form-control mt-3"
+                placeholder="Por exemplo: 1, 2, 3, 4...">
+              <div
+                *ngIf="dataForm.controls['data'].invalid && (dataForm.controls['data'].dirty || dataForm.controls['data'].touched)"
+                class="text-danger">
+                São necessários dados.
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3 col-md-12" [disabled]="dataForm.invalid">Calcular</button>
+          </form>
+          <div *ngIf="stdDeviation !== undefined && mean !== undefined" class="mt-4">
+            <div class="alert alert-info">
+              <p><strong>Média:</strong> {{ mean }}</p>
+              <p><strong>Desvio-padrão:</strong> {{ stdDeviation }}</p>
+            </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-3 col-md-12" [disabled]="dataForm.invalid">Calcular</button>
-      </form>
-      <div *ngIf="stdDeviation !== undefined && mean !== undefined" class="mt-4">
-        <div class="alert alert-info">
-          <p><strong>Média:</strong> {{ mean }}</p>
-          <p><strong>Desvio-padrão:</strong> {{ stdDeviation }}</p>
+      </div>
+      <div class="row justify-content-center mt-5">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="text-center d-block">Histórico de Cálculos</h3>
+            </div>
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Dados</th>
+                    <th scope="col">Média</th>
+                    <th scope="col">Desvio-padrão</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let calculation of calculations; let i = index">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ calculation.data.join(', ') }}</td>
+                    <td>{{ calculation.mean }}</td>
+                    <td>{{ calculation.stdDeviation }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Tabela para mostrar os dados salvos -->
-  <div class="card mt-5">
-    <div class="card-header">
-      <h3 class="text-center d-block">Histórico de Cálculos</h3>
-    </div>
-    <div class="card-body">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Dados</th>
-            <th scope="col">Média</th>
-            <th scope="col">Desvio-padrão</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let calculation of calculations; let i = index">
-            <th scope="row">{{ i + 1 }}</th>
-            <td>{{ calculation.data.join(', ') }}</td>
-            <td>{{ calculation.mean }}</td>
-            <td>{{ calculation.stdDeviation }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </div>
